@@ -14,39 +14,43 @@ dotnet add package Philiprehberger.Pluralizer
 
 ## Usage
 
+### Pluralize and Singularize
+
 ```csharp
 using Philiprehberger.Pluralizer;
 
-// Pluralize
 Pluralizer.Pluralize("cat");       // "cats"
-Pluralizer.Pluralize("bus");       // "buses"
 Pluralizer.Pluralize("baby");      // "babies"
-Pluralizer.Pluralize("wolf");      // "wolves"
 Pluralizer.Pluralize("person");    // "people"
 Pluralizer.Pluralize("child");     // "children"
 
-// Singularize
-Pluralizer.Singularize("cats");     // "cat"
 Pluralizer.Singularize("buses");    // "bus"
-Pluralizer.Singularize("babies");   // "baby"
 Pluralizer.Singularize("wolves");   // "wolf"
 Pluralizer.Singularize("people");   // "person"
 Pluralizer.Singularize("children"); // "child"
+```
 
-// Count-aware formatting
-Pluralizer.Format(0, "item");  // "0 items"
-Pluralizer.Format(1, "item");  // "1 item"
-Pluralizer.Format(5, "item");  // "5 items"
+### Count-Aware Formatting and Detection
+
+```csharp
+using Philiprehberger.Pluralizer;
+
+Pluralizer.Format(0, "item");   // "0 items"
+Pluralizer.Format(1, "item");   // "1 item"
+Pluralizer.Format(5, "item");   // "5 items"
 Pluralizer.Format(1, "person"); // "1 person"
 Pluralizer.Format(3, "person"); // "3 people"
 
-// Detection
 Pluralizer.IsPlural("cats");    // true
 Pluralizer.IsSingular("cat");   // true
 Pluralizer.IsPlural("sheep");   // true (uncountable)
-Pluralizer.IsSingular("sheep"); // true (uncountable)
+```
 
-// Custom rules
+### Custom Rules
+
+```csharp
+using Philiprehberger.Pluralizer;
+
 Pluralizer.AddIrregular("cactus", "cacti");
 Pluralizer.Pluralize("cactus"); // "cacti"
 

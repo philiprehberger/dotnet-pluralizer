@@ -8,7 +8,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Philiprehberger.Pluralizer</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Philip Rehberger</Authors>
     <Description>Singularize and pluralize English words with irregular forms, uncountable words, and count-aware formatting.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
