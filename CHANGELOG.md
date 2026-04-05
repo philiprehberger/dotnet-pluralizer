@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.0] - 2026-04-05
+
+- Add `Pluralizer.Ordinalize(int number)` method for converting integers to ordinal strings (1st, 2nd, 3rd, 4th, 11th, 21st, etc.)
+
 ## 0.1.2 (2026-03-31)
 
 - Standardize README to 3-badge format with emoji Support section

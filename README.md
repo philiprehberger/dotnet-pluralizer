@@ -4,7 +4,7 @@
 [![NuGet](https://img.shields.io/nuget/v/Philiprehberger.Pluralizer.svg)](https://www.nuget.org/packages/Philiprehberger.Pluralizer)
 [![Last updated](https://img.shields.io/github/last-commit/philiprehberger/dotnet-pluralizer)](https://github.com/philiprehberger/dotnet-pluralizer/commits/main)
 
-Singularize and pluralize English words with irregular forms, uncountable words, and count-aware formatting.
+Singularize and pluralize English words with irregular forms, uncountable words, count-aware formatting, and ordinal number conversion.
 
 ## Installation
 
@@ -46,6 +46,20 @@ Pluralizer.IsSingular("cat");   // true
 Pluralizer.IsPlural("sheep");   // true (uncountable)
 ```
 
+### Ordinalize Numbers
+
+```csharp
+using Philiprehberger.Pluralizer;
+
+Pluralizer.Ordinalize(1);   // "1st"
+Pluralizer.Ordinalize(2);   // "2nd"
+Pluralizer.Ordinalize(3);   // "3rd"
+Pluralizer.Ordinalize(4);   // "4th"
+Pluralizer.Ordinalize(11);  // "11th"
+Pluralizer.Ordinalize(21);  // "21st"
+Pluralizer.Ordinalize(113); // "113th"
+```
+
 ### Custom Rules
 
 ```csharp
@@ -67,6 +81,7 @@ Pluralizer.Pluralize("software"); // "software"
 | `Pluralize(string word)` | Convert a singular word to its plural form |
 | `Singularize(string word)` | Convert a plural word to its singular form |
 | `Format(int count, string word)` | Format as "count word(s)" using the correct form |
+| `Ordinalize(int number)` | Convert an integer to its ordinal string (1 → "1st", 2 → "2nd") |
 | `IsPlural(string word)` | Check if a word is in plural form |
 | `IsSingular(string word)` | Check if a word is in singular form |
 | `AddIrregular(string singular, string plural)` | Register a custom irregular word pair |

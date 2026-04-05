@@ -8,13 +8,13 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Philiprehberger.Pluralizer</PackageId>
-    <Version>0.1.2</Version>
+    <Version>0.2.0</Version>
     <Authors>Philip Rehberger</Authors>
-    <Description>Singularize and pluralize English words with irregular forms, uncountable words, and count-aware formatting.</Description>
+    <Description>Singularize and pluralize English words with irregular forms, uncountable words, count-aware formatting, and ordinal number conversion.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/philiprehberger/dotnet-pluralizer</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>pluralize;singularize;english;text;inflection</PackageTags>
+    <PackageTags>pluralize;singularize;ordinalize;english;text;inflection</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 

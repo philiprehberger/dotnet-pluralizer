@@ -172,6 +172,25 @@ public static class Pluralizer
     }
 
     /// <summary>
+    /// Converts an integer to its ordinal string representation (e.g., 1 → "1st", 2 → "2nd", 3 → "3rd", 4 → "4th").
+    /// Handles special cases for 11th, 12th, 13th and negative numbers.
+    /// </summary>
+    /// <param name="number">The integer to ordinalize.</param>
+    /// <returns>The ordinal string representation of the number.</returns>
+    public static string Ordinalize(int number)
+    {
+        var abs = Math.Abs(number);
+        var lastTwo = abs % 100;
+        var lastOne = abs % 10;
+        var suffix = (lastTwo >= 11 && lastTwo <= 13) ? "th"
+            : lastOne == 1 ? "st"
+            : lastOne == 2 ? "nd"
+            : lastOne == 3 ? "rd"
+            : "th";
+        return $"{number}{suffix}";
+    }
+
+    /// <summary>
     /// Registers a word as uncountable (same form for singular and plural).
     /// </summary>
     /// <param name="word">The uncountable word to register.</param>
