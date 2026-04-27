@@ -17,7 +17,7 @@ internal static class Rules
         (new Regex(@"(passer)s?by$", RegexOptions.IgnoreCase), "$1sby"),
         (new Regex(@"(matr|vert|append)ix|ex$", RegexOptions.IgnoreCase), "$1ices"),
         (new Regex(@"(x|ch|ss|sh)$", RegexOptions.IgnoreCase), "$1es"),
-        (new Regex(@"([^aeiouy]}|qu)y$", RegexOptions.IgnoreCase), "$1ies"),
+        (new Regex(@"([^aeiouy]|qu)y$", RegexOptions.IgnoreCase), "$1ies"),
         (new Regex(@"(hive)$", RegexOptions.IgnoreCase), "$1s"),
         (new Regex(@"([^f])fe$", RegexOptions.IgnoreCase), "$1ves"),
         (new Regex(@"(ar|l|ea|eo|oa|hoo)f$", RegexOptions.IgnoreCase), "$1ves"),

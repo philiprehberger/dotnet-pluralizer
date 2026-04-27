@@ -60,6 +60,29 @@ Pluralizer.Ordinalize(21);  // "21st"
 Pluralizer.Ordinalize(113); // "113th"
 ```
 
+### Titleize Phrases
+
+```csharp
+using Philiprehberger.Pluralizer;
+
+Pluralizer.Titleize("the quick brown fox");        // "The Quick Brown Fox"
+Pluralizer.Titleize("a tale of two cities");       // "A Tale of Two Cities"
+
+Pluralizer.Titleize(3, "open bug");                // "3 Open Bugs"
+Pluralizer.Titleize(1, "open bug");                // "1 Open Bug"
+```
+
+### Spelled-Out Ordinals
+
+```csharp
+using Philiprehberger.Pluralizer;
+
+Pluralizer.ToOrdinalWords(1);    // "first"
+Pluralizer.ToOrdinalWords(20);   // "twentieth"
+Pluralizer.ToOrdinalWords(23);   // "twenty-third"
+Pluralizer.ToOrdinalWords(123);  // "one hundred twenty-third"
+```
+
 ### Custom Rules
 
 ```csharp
@@ -82,6 +105,9 @@ Pluralizer.Pluralize("software"); // "software"
 | `Singularize(string word)` | Convert a plural word to its singular form |
 | `Format(int count, string word)` | Format as "count word(s)" using the correct form |
 | `Ordinalize(int number)` | Convert an integer to its ordinal string (1 → "1st", 2 → "2nd") |
+| `Titleize(string text)` | Capitalize major words; leave small connectors lowercase |
+| `Titleize(int count, string text)` | Titleized count phrase with the final noun pluralized as needed |
+| `ToOrdinalWords(int number)` | Spelled-out ordinal for 0..999 (e.g. 23 → "twenty-third") |
 | `IsPlural(string word)` | Check if a word is in plural form |
 | `IsSingular(string word)` | Check if a word is in singular form |
 | `AddIrregular(string singular, string plural)` | Register a custom irregular word pair |

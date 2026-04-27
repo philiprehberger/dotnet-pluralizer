@@ -107,18 +107,17 @@ public static class Pluralizer
                 return true;
             }
 
-            // A word is plural if singularizing it produces a different word
-            // and pluralizing that singular form gives back the original
+            // If singularizing the word produces a different result, the original was plural.
             string singular = Singularize(word);
-            if (string.Equals(singular, word, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(singular, word, StringComparison.OrdinalIgnoreCase))
             {
-                // Singularize didn't change it; check if pluralizing changes it
-                string plural = Pluralize(word);
-                return !string.Equals(plural, word, StringComparison.OrdinalIgnoreCase);
+                return true;
             }
 
-            // Singularize changed it, so the original was plural
-            return true;
+            // If both singularize and pluralize leave the word unchanged, treat it as plural-equivalent
+            // (e.g. "fish" — uncountable-like words not in the explicit list).
+            string plural = Pluralize(word);
+            return string.Equals(plural, word, StringComparison.OrdinalIgnoreCase);
         }
     }
 
@@ -202,6 +201,128 @@ public static class Pluralizer
         {
             Uncountables.Add(word);
         }
+    }
+
+    private static readonly HashSet<string> SmallWords = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "a", "an", "and", "as", "at", "but", "by", "for", "in", "of", "on", "or", "the", "to", "vs", "via"
+    };
+
+    /// <summary>
+    /// Capitalizes the first character of every major word in <paramref name="text"/>.
+    /// Small connecting words (a, an, and, the, of, etc.) are left lowercase except when they are
+    /// the first or last word of the phrase.
+    /// </summary>
+    /// <param name="text">The phrase to titleize.</param>
+    /// <returns>The titleized phrase.</returns>
+    public static string Titleize(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return text;
+        }
+
+        var tokens = text.Split(' ');
+        for (var i = 0; i < tokens.Length; i++)
+        {
+            var token = tokens[i];
+            if (token.Length == 0) continue;
+
+            var isEdge = i == 0 || i == tokens.Length - 1;
+            if (!isEdge && SmallWords.Contains(token))
+            {
+                tokens[i] = token.ToLowerInvariant();
+                continue;
+            }
+
+            tokens[i] = char.ToUpperInvariant(token[0]) + (token.Length > 1 ? token[1..].ToLowerInvariant() : string.Empty);
+        }
+
+        return string.Join(' ', tokens);
+    }
+
+    /// <summary>
+    /// Returns "<paramref name="count"/> <paramref name="text"/>" with the trailing word pluralized for
+    /// counts other than 1, then titleized as a phrase. Useful for headings like "3 Open Bugs".
+    /// </summary>
+    /// <param name="count">The count to prefix.</param>
+    /// <param name="text">The phrase whose final noun is the countable subject.</param>
+    /// <returns>The titleized count phrase.</returns>
+    public static string Titleize(int count, string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return $"{count}";
+        }
+
+        var tokens = text.Split(' ');
+        var lastIndex = tokens.Length - 1;
+        tokens[lastIndex] = count == 1 ? Singularize(tokens[lastIndex]) : Pluralize(tokens[lastIndex]);
+
+        return $"{count} {Titleize(string.Join(' ', tokens))}";
+    }
+
+    private static readonly string[] OnesWords =
+    {
+        "zeroth", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth"
+    };
+
+    private static readonly string[] TeensWords =
+    {
+        "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth"
+    };
+
+    private static readonly string[] TensWords =
+    {
+        "", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"
+    };
+
+    private static readonly string[] TensOrdinals =
+    {
+        "", "", "twentieth", "thirtieth", "fortieth", "fiftieth", "sixtieth", "seventieth", "eightieth", "ninetieth"
+    };
+
+    private static readonly string[] OnesCardinal =
+    {
+        "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"
+    };
+
+    /// <summary>
+    /// Converts an integer to its English ordinal word form (e.g. 1 → "first", 23 → "twenty-third").
+    /// Supports values in <c>0..999</c>.
+    /// </summary>
+    /// <param name="number">The number to spell out as an ordinal word.</param>
+    /// <returns>The ordinal in spelled-out English.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="number"/> is outside <c>0..999</c>.</exception>
+    public static string ToOrdinalWords(int number)
+    {
+        if (number < 0 || number > 999)
+        {
+            throw new ArgumentOutOfRangeException(nameof(number), number, "ToOrdinalWords supports values from 0 to 999.");
+        }
+
+        if (number < 10) return OnesWords[number];
+        if (number < 20) return TeensWords[number - 10];
+
+        if (number < 100)
+        {
+            var tens = number / 10;
+            var ones = number % 10;
+            return ones == 0
+                ? TensOrdinals[tens]
+                : $"{TensWords[tens]}-{OnesWords[ones]}";
+        }
+
+        var hundreds = number / 100;
+        var rest = number % 100;
+        var hundredsPart = $"{OnesCardinal[hundreds]} hundred";
+
+        if (rest == 0) return $"{hundredsPart}th";
+        return $"{hundredsPart} {ToOrdinalWords(rest)}";
     }
 
     private static string PreserveCase(string original, string replacement)
